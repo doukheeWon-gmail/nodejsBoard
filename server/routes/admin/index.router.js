@@ -8,6 +8,8 @@ const MainCtrl = require('../../ctrl/admin/index.ctrl');
 const Auth = require('../../auth/passport').AdminAuth();
 /** Admin User Router */
 const UserRouter = require('./user/user.router');
+/** Admin Member Router */
+const MemberRouter = require('./member/member.router');
 /** Admin Board Router */
 const BoardRouter = require('./board/board.router');
 
@@ -27,12 +29,13 @@ module.exports = (app, csurf) => {
     // app.use(expressLayouts);
     // app.set('layout', '../partials/admin/index');
     // app.set("layout extractScripts", true);
-
     /** Main Admin Router */
     app.use('/admin', MainRouter(Auth));
     //app.use('/admin', MainRouter(Auth.AdminAuth, csurf));
     /** User Admin Router */
     app.use('/admin/user', UserRouter(Auth, csurf));
+    /** Admin Member Router */
+    app.use("/admin/members", MemberRouter(Auth, csurf));
     //app.use('/admin/user', UserRouter(Auth.AdminAuth, csurf));
     app.use("/admin/boards", BoardRouter(Auth, csurf));
 };

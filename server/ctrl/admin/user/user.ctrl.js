@@ -86,6 +86,7 @@ const LogoutDoUser = (req, res, next) => {
 const ProfilePageUser = (req, res, next) => {
     console.log("Admin User Profile Page");
     console.log("Profile Session : ", req.user);
+
     UserService.ProfileService(req.user).then(result => {
         console.log("Result : ", result);
         return res.render("admin/User/profile", {

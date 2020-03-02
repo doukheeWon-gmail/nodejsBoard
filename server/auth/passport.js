@@ -109,6 +109,7 @@ const AdminAuth = (req) => {
             console.log("Not Login User Go to Login Page");
             let getURL = req.originalUrl.split("/");
             console.log("Get URL : ", getURL);
+            console.log("Get URL : ", getURL[2]);
             if (getURL[2] !== "") {
                 req.flash("Login", "로그인을 해야합니다.");
                 return res.redirect('/admin/user/login');

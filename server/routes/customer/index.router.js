@@ -23,9 +23,8 @@ module.exports = (app, csurf) => {
     //app.use(expressLayouts);
     //app.set('layout', "../partials/customer/index");
     //app.set('layout extractScripts', true);
-
     /** Customer Main Router */
-    app.use('/', MainRouter);
+    app.use('/', MainRouter(Auth));
     /** Customer User Router */
     app.use('/user', UserRouter(Auth, csurf));
     /** Customer Board Router */

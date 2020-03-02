@@ -6,37 +6,25 @@ const MemberCtrl = require('../../../ctrl/admin/member/member.ctrl');
 const AdminMemberRouter = (auth, csurf) => {
 
     /** Admin Member Create Page */
-    router.get('/create', (req, res, next) => {
-        console.log("Admin Member Page");
-    });
+    router.get('/create', csurf, auth.isAuthenticated, MemberCtrl.RegistePage);
 
     /** Admin Member Create Do */
-    router.post('/create', (req, res, next) => {
-        console.log("Admin Member Do");
-    });
+    router.post('/create', csurf, auth.isAuthenticated, MemberCtrl.RegisteDo);
 
     /** Admin Member List Page */
     router.get('/list', MemberCtrl.ListPage);
 
     /** Admin Member Modify Page */
-    router.get("/modify", (req, res, next) => {
-        console.log("Admin Member Modify Page");
-    });
+    router.get("/modify", MemberCtrl.ModifyPage);
 
     /** Admin Member Modify Do */
-    router.post("/modify", (req, res, next) => {
-        console.log("Admin Member Modify Do");
-    });
+    router.post("/modify", MemberCtrl.ModifyDo);
 
     /** Admin Member Detail Page */
-    router.get("/detail", (req, res, next) => {
-        console.log("Admin Member Detail Page");
-    });
+    router.get("/detail", MemberCtrl.ProfilePage);
 
     /** Admin Member Delete Do */
-    router.post("/delete", (req, res, next) => {
-        console.log("Admin Member Delete Do");
-    });
+    router.post("/delete", MemberCtrl.DeleteDo);
 
     return router;
 };

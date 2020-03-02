@@ -42,6 +42,8 @@ const ListBoard = (Boards) => {
                 let MaxPage = 0;
                 if (parseInt(AllCount % 10) !== 0) {
                     MaxPage = parseInt(AllCount / 10) + 1;
+                } else if (parseInt(AllCount) === 0) {
+                    MaxPage = 1;
                 } else {
                     MaxPage = parseInt(AllCount / 10);
                 }

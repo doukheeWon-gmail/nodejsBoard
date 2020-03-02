@@ -11,7 +11,8 @@ const MainPage = (req, res, next) => {
 const CreatePage = (req, res, next) => {
     console.log("Admin Board Create Page");
     return res.render("admin/Boards/create", {
-        writer: req.user,
+        title: "",
+        login: req.user,
         _csrf: req.csrfToken(),
         msg: req.flash('BoardsMsg')
     });
@@ -49,8 +50,10 @@ const CreateDo = (req, res, next) => {
 const ModifyPage = (req, res, next) => {
     console.log("Admin Board Modify Page");
     let bno = req.body.bno || req.query.bno || req.param.bno || req.params.bno || "";
-    let user = req.user;
-    return res.json("Modify Page");
+    let user = req.user || "";
+    let temp = `Modify Page is ${bno}. login User ${user}`;
+    console.log(temp);
+    return res.json("");
 };
 
 /** Admin Board Controller Modify Do */
@@ -59,9 +62,9 @@ const ModifyDo = (req, res, next) => {
     let title = req.body.title || req.query.title || req.param.title || req.params.title || "";
     let content = req.body.content || req.query.content || req.param.content || req.params.content || "";
     let writer = req.body.writer || req.query.writer || req.param.writer || req.params.writer || "";
-
-
     console.log("Admin Board Modify Do");
+    let temp = `${bno} is Modify title : ${title}, content : ${content}, writer : ${writer}`;
+    console.log(temp);
     return res.json("Modify Do");
 };
 
@@ -80,9 +83,10 @@ const ViewPage = (req, res, next) => {
     Service.GetBoard(bno).then(result => {
         console.log("result : ", result);
         return res.render('admin/Boards/view', {
+            title: "",
             boards: result,
             replies: result.web_replies,
-            user: req.user,
+            login: req.user,
             _csrf: req.csrfToken()
         });
     }).catch(err => {
@@ -120,7 +124,8 @@ const ListPage = (req, res, next) => {
     Service.ListBoard(Search).then(result => {
         console.log("Result : ", result);
         return res.render('admin/Boards/list', {
-            user: req.user,
+            title: "",
+            login: req.user,
             list: result.List,
             MaxPage: result.MaxPage,
             curPage: result.curPage,
