@@ -1,5 +1,25 @@
+/** Index Model */
 const models = require('../../../../DataBase/Mysql/models/index');
+/** User Model */
 const user = require('../../../../DataBase/Mysql/models/user');
+
+
+/** Check Email User */
+const CheckEmailUser = (Users) => {
+    return new Promise((resolve, reject) => {
+        models.user.findOne({
+            where: {
+                userEmail: Users.Email
+            }
+        }).then(result => {
+            return resolve(result);
+        }).catch(err => {
+            console.log("Admin User Email Check Error Code ::: ", err.code);
+            console.log("Admin User Email Check Error ::: ", err);
+            return reject(err);
+        });
+    });
+};
 
 /** Registe user Default Role USER */
 const CreateUser = (Users) => {
@@ -48,7 +68,81 @@ const LoginUser = (Users) => {
         });
     });
 };
+
+/** Counter User */
+const CounterUser = (options) => {
+    return new Promise((resolve, reject) => {
+        models.user.count({
+            where: options
+        }).then(result => {
+            return resolve(result);
+        }).catch(err => {
+            console.log("Admin Counter User Dao Error Code ::: ", err.code);
+            console.log("Admin Counter User Dao Error ::: ", err);
+            return reject(err);
+        });
+    });
+};
+
+/** Profile User */
+const DetailUser = (Users) => {
+    return new Promise((resolve, reject) => {
+        models.user.findOne({
+            where: {
+                userEmail: Users.Email
+            }
+        }).then(result => {
+            return resolve(result);
+        }).catch(err => {
+            console.log("Admin User Detail Dao Error Code ::: ", err.code);
+            console.log("Admin User Detail Dao Error ::: ", err);
+            return reject(err);
+        });
+    });
+};
+
+/** Update User */
+const UpdateUser = (Users) => {
+    return new Promise((resolve, reject) => {
+        models.user.update({
+
+        }, {
+            where: {
+
+            }
+        }).then(result => {
+            return resolve(result);
+        }).catch(err => {
+            console.log("Admin User Update Dao Error Code ::: ", err.code);
+            console.log("Admin User Update Dao Error ::: ", err);
+            return reject(err);
+        });
+    });
+};
+
+/** Delete User */
+const DeleteUser = (Users) => {
+    return new Promise((resolve, reject) => {
+        models.user.destroy({
+            where: {
+
+            }
+        }).then(result => {
+            return resolve(result);
+        }).catch(err => {
+            console.log("Delete Admin User Error Code ::: ", err.code);
+            console.log("Delete Admin User Error ::: ", err);
+            return reject(err);
+        });
+    });
+};
+
 module.exports = {
+    CheckEmailUser,
     CreateUser,
-    LoginUser
+    CounterUser,
+    LoginUser,
+    DetailUser,
+    UpdateUser,
+    DeleteUser
 };
