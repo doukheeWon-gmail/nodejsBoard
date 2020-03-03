@@ -13,9 +13,12 @@ const KakaoStrategy = require('passport-kakao').Strategy;
 const RememberMeStrategy = require('passport-remember-me').Strategy;
 /** password compare Module */
 const bcrypt = require('bcrypt-nodejs');
-/** Local DataBase Check Users Dao */
+/** Local DataBase Check Admin Users Dao */
 const _AdminUserDao = require('../dao/admin/user/index.dao');
 const AdminUserDao = _AdminUserDao();
+/** Local DataBase Check Users Dao */
+const _UserDao = require('../dao/customer/user/index.dao');
+const UserDao = _UserDao();
 
 /** Admin Local Auth */
 const AdminAuth = (req) => {
@@ -187,7 +190,7 @@ const CustomerAuth = (req) => {
             return next();
         },
         login: passport.authenticate('local-customer', {
-            failureRedirect: '/admin/login',
+            failureRedirect: '/user/login',
             failureFlash: true
         }),
         /** Logout before Check Middle ware */

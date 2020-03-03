@@ -4,15 +4,15 @@ const configFile = require('../../../../config/config.json');
 const UserDao = () => {
     if (configFile.database.mysql) {
         console.log('Admin User Mysql Setting');
-        const MysqlUserDao = require('./mysql/user.dao');
-        return MysqlUserDao;
+        const MysqlDao = require('./mysql/user.dao');
+        return MysqlDao;
     } else if (configFile.database.mongoDB) {
         console.log('Admin User mongoDB Setting');
         const MongoDBDao = require('./mongoDB/user.dao');
         return MongoDBDao;
     } else {
         let temp = ``;
-        throw new Error("Setting Database config file");
+        throw new Error("Setting Database Config File");
     }
 };
 

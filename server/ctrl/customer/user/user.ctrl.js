@@ -13,6 +13,30 @@ const RegistePageUser = (req, res, next) => {
 /** Registe Do */
 const RegisteDoUser = (req, res, next) => {
     console.log("User Create Do");
+    const Email = req.body.UserEmail || req.query.UserEmail || "";
+    const Password = req.body.UserPassword || req.query.UserPassword || "";
+    const Name = req.body.UserName || req.query.UserName || "";
+    let temp = `User Registe Email is ${Email}, Password is ${Password}, Name is ${Name}`;
+    console.log(temp);
+    if (Email == "") {
+        req.flash("RegisteMsg", "이메일을 입력하세요.");
+        return res.redirect('/user/registe');
+    }
+    if (Password == "") {
+        req.flash("RegisteMsg", "이메일을 입력하세요.");
+        return res.redirect('/user/registe');
+    }
+    if (Name == "") {
+        req.flash("RegisteMsg", "이메일을 입력하세요.");
+        return res.redirect('/user/registe');
+    }
+    /** Create User Json */
+    let users = {
+        Email: Email,
+        Password: Password,
+        Name: Name
+    };
+
 };
 
 /** Login page */

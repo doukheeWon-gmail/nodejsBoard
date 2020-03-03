@@ -151,6 +151,14 @@
         document.location.href = "/admin/boards/list?type=" + type + "&keyword=" + keyword;
       });
     }
+
+    function getUrlParams() {
+      let params = {};
+      window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) { params[key] = value; });
+      return params;
+    }
+
+
     function Modify(){
       $("#modifyBtn").click(function(){
         let get = [];

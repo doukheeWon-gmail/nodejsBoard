@@ -22,9 +22,9 @@ const CreateMember = (Members) => {
         models.user.create({
 
         }).then(result => {
-
+            return resolve(result);
         }).catch(err => {
-
+            return reject(err);
         });
     });
 };

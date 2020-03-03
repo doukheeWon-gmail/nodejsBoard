@@ -48,7 +48,8 @@ const ListPage = (req, res, next) => {
     console.log(tmp);
     return res.render("./admin/Member/list", {
         title: 'AdminLTE 2 | Member Create',
-        login: req.user
+        login: req.user,
+        list: null
     });
 };
 
