@@ -1,10 +1,61 @@
+/** Admin User Controller */
+const UserCtrl = require('../../../ctrl/admin/user/user.ctrl');
+/** Admin User Dao */
+const _UserDao = require('../../../dao/admin/user/index.dao');
+const UserDao = _UserDao();
+/** Password Encoder */
+const bcrypt = require('bcrypt-nodejs');
 /** Admin User Router Test */
 module.exports = (request, should, app) => {
+    /** User Dao Tests */
+    describe("User Dao Tests", () => {
+        it("1) Admin User Insert Tests", (done) => {
+            let Users = {
+                Email: "admin@co.kr",
+                Password: bcrypt.hashSync("admin"),
+                Name: "adminTest",
+                role: 'ADMIN'
+            };
+            UserDao.CreateUser(Users).then(result => {
+                //console.log("Insert Admin User : ", result);
+                return done();
+            }).catch(err => {
+                throw err;
+            });
+        });
+        /** Check Admin User By userEmail */
+        it("2) find User Tests", (done) => {
+            let Users = {
+                Email: "admin@co.kr"
+            };
+            UserDao.CheckEmailUser(Users).then(result => {
+                //console.log("Find User :", result);
+                return done();
+            }).catch(err => {
+                throw err;
+            });
+        });
+        /** Admin User Modify By userEmail */
+        it("3) modify User Tests", (done) => {
+            let Users = {
+                Email: "",
+                Password: "",
+                Name: "",
+                role: ""
+            };
+            UserDao.UpdateUser().then(result => {
+                return done();
+            }).catch(err => {
+                throw err;
+            })
+        });
+    });
+    /** User Url Get Tests */
     describe("GET User Tests", () => {
         /** Admin User Test Case(1) */
         it("1) Main Page Tests", (done) => {
             request(app)
-                .get('/admin/users')
+                .get('/admin/user')
                 .expect(302)
                 .end((err, res) => {
                     if (err) {
@@ -18,7 +69,8 @@ module.exports = (request, should, app) => {
         /** Admin User Test Case(2) */
         it("2) Login Page Tests", (done) => {
             request(app)
-                .get('/admin/users/login')
+                .get('/admin/user/login')
+                .expect(200)
                 .end((err, res) => {
                     if (err) {
                         console.log("Admin User Tests Error Code ::: ", err.code);
@@ -31,7 +83,8 @@ module.exports = (request, should, app) => {
         /** Admin User Test Case(3) */
         it("3) Profile Page Tests", (done) => {
             request(app)
-                .get('/admin/users/profile')
+                .get('/admin/user/profile')
+                .expect(302)
                 .end((err, res) => {
                     if (err) {
                         console.log("Admin User Tests Error Code ::: ", err.code);
@@ -42,11 +95,14 @@ module.exports = (request, should, app) => {
                 });
         });
         /** Admin User Test Case(4) */
+        /*
         it("4) ", (done) => {
 
         });
+        */
     });
     /** Get Method End */
+    /** Post Url Tests */
     describe("POST User Tests", () => {
         /** Admin User Test Case(1) */
         let admin = {
@@ -54,6 +110,7 @@ module.exports = (request, should, app) => {
             password: 'admin'
         };
         /** Admin Login Page Post Tests */
+        /*
         it("1) Login Tests", (done) => {
             request(app)
                 .post('/admin/users/login')
@@ -68,7 +125,9 @@ module.exports = (request, should, app) => {
                     return done();
                 });
         });
+        */
         /** Admin Update Page Post Tests */
+        /*
         it("2) Update Tests", (done) => {
             request(app)
                 .post('/admin/users/update')
@@ -80,6 +139,6 @@ module.exports = (request, should, app) => {
                 });
             return done();
         });
-
+        */
     });
 };

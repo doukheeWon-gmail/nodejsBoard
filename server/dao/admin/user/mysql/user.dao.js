@@ -23,6 +23,11 @@ const CheckEmailUser = (Users) => {
 
 /** Registe User */
 const CreateUser = (Users) => {
+    if (Users.role) {
+        console.log("User Role : ", Users.role);
+    } else {
+        Users.role = "USER";
+    }
     return new Promise((resolve, reject) => {
         models.user.findOrCreate({
             where: {
@@ -31,7 +36,8 @@ const CreateUser = (Users) => {
             defaults: {
                 userEmail: Users.Email,
                 userPassword: Users.Password,
-                userName: Users.Name
+                userName: Users.Name,
+                role: Users.role
             }
         }).spread((user, create) => {
             if (create) {

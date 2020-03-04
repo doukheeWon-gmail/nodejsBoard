@@ -5,6 +5,8 @@ const router = express.Router();
 const UserCtrl = require('../../../ctrl/admin/user/user.ctrl');
 
 const AdminUserRouter = (auth, csurf) => {
+    /** Admin Main Page */
+    router.get("", UserCtrl.MainPageUser);
     /** Admin Create Page */
     router.get('/create', csurf, UserCtrl.RegistePageUser);
     //router.get('/create', auth.isAuthenticated, UserCtrl.RegistePageUser);

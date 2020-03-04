@@ -1,6 +1,11 @@
 /** Admin User Service */
 const UserService = require('../../../service/admin/user/user.service');
 
+/** Main Page */
+const MainPageUser = (req, res, next) => {
+    console.log("Admin User Main Page Redirect /admin");
+    return res.redirect('/admin');
+};
 
 /** Registe Page */
 const RegistePageUser = (req, res, next) => {
@@ -100,7 +105,7 @@ const ProfilePageUser = (req, res, next) => {
 /** Modify Page */
 const ModifyPageUser = (req, res, next) => {
     console.log("Admin User Modify Page");
-    res.render('./admin/User/profile');
+    res.render('/admin/User/profile');
 };
 
 /** Modify Do */
@@ -109,6 +114,7 @@ const ModifyDoUser = (req, res, next) => {
 };
 
 module.exports = {
+    MainPageUser,
     RegistePageUser,
     RegisteDoUser,
     LoginPageUser,

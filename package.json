@@ -4,6 +4,7 @@
     "private": true,
     "scripts": {
         "start": "node ./bin/www",
+        "test": "mocha ./app.spec.js",
         "build": "pkg . --debug --out-path ./dist"
     },
     "dependencies": {
