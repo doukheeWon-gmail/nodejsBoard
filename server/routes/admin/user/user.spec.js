@@ -18,10 +18,10 @@ module.exports = (request, should, app) => {
             };
             UserDao.CreateUser(Users).then(result => {
                 //console.log("Insert Admin User : ", result);
-                return done();
+
             }).catch(err => {
                 throw err;
-            });
+            }).then(done, done);
         });
         /** Check Admin User By userEmail */
         it("2) find User Tests", (done) => {
@@ -30,24 +30,37 @@ module.exports = (request, should, app) => {
             };
             UserDao.CheckEmailUser(Users).then(result => {
                 //console.log("Find User :", result);
-                return done();
+
             }).catch(err => {
                 throw err;
-            });
+            }).then(done, done);
         });
         /** Admin User Modify By userEmail */
         it("3) modify User Tests", (done) => {
+            let Users = {
+                Email: "test@co.kr",
+                Password: "test",
+                Name: "test",
+                role: "MANAGER"
+            };
+            UserDao.UpdateUser(Users).then(result => {
+
+            }).catch(err => {
+                throw err;
+            }).then(done, done);
+        });
+        it("4) delete User Tests", (done) => {
             let Users = {
                 Email: "",
                 Password: "",
                 Name: "",
                 role: ""
             };
-            UserDao.UpdateUser().then(result => {
-                return done();
+            UserDao.DeleteUser(Users).then(result => {
+
             }).catch(err => {
                 throw err;
-            })
+            }).then(done, done);
         });
     });
     /** User Url Get Tests */
