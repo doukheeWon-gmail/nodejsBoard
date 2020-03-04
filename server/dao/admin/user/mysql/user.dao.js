@@ -110,10 +110,13 @@ const DetailUser = (Users) => {
 const UpdateUser = (Users) => {
     return new Promise((resolve, reject) => {
         models.user.update({
-
+            userEmail: Users.Email,
+            userPassword: Users.Password,
+            userName: Users.Name,
+            role: Users.role
         }, {
             where: {
-
+                userEmail: Users.Email,
             }
         }).then(result => {
             return resolve(result);
@@ -125,12 +128,13 @@ const UpdateUser = (Users) => {
     });
 };
 
+//TODO
 /** Delete User */
 const DeleteUser = (Users) => {
     return new Promise((resolve, reject) => {
         models.user.destroy({
             where: {
-
+                userEmail: Users.Email
             }
         }).then(result => {
             return resolve(result);
