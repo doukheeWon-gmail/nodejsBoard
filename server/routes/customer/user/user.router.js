@@ -6,9 +6,9 @@ const UserCtrl = require('../../../ctrl/customer/user/user.ctrl');
 
 const UserRouter = (auth, csurf) => {
     /** Customer Create Page */
-    router.get("/registe", csurf, UserCtrl.RegistePageUser);
+    router.get("/signUp", csurf, UserCtrl.RegistePageUser);
     /** Customer Create Do */
-    router.post("/registe", csurf, UserCtrl.RegisteDoUser);
+    router.post("/signUp", csurf, UserCtrl.RegisteDoUser);
     /** Customer Login Page */
     router.get("/login", csurf, auth.isNotLogin, UserCtrl.LoginPageUser);
     /** Customer Login Do */

@@ -1,8 +1,10 @@
+/** Admin Member Main Page */
 const MainPage = (req, res, next) => {
     console.log("Admin Member Main Page Redirect List Page");
     return res.redirect('/admin/members/list');
 };
 
+/** Admin Member Registe Page */
 const RegistePage = (req, res, next) => {
     console.log("Admin Member Registe Page");
 
@@ -13,11 +15,13 @@ const RegistePage = (req, res, next) => {
     });
 };
 
+/** Admin Member Registe Do */
 const RegisteDo = (req, res, next) => {
     console.log("Admin Member Regisge Do");
     return res.json("");
 };
 
+/** Admin Member Detail Page */
 const ProfilePage = (req, res, next) => {
     return res.render("./admin/Member/detail", {
         title: 'AdminLTE 2 | Member Detail',
@@ -25,6 +29,7 @@ const ProfilePage = (req, res, next) => {
     });
 };
 
+/** Admin Member Modify Page */
 const ModifyPage = (req, res, next) => {
     return res.render("./admin/Member/update", {
         title: 'AdminLTE 2 | Member Modify',
@@ -32,14 +37,17 @@ const ModifyPage = (req, res, next) => {
     });
 };
 
+/** Admin Member Modify Do */
 const ModifyDo = (req, res, next) => {
     return res.json("");
 };
 
+/** Admin Member Delete Do */
 const DeleteDo = (req, res, next) => {
     return res.json("");
 };
 
+/** Admin Member List Page */
 const ListPage = (req, res, next) => {
     let Page = req.body.page || req.query.page || req.param.page || req.params.page || "";
     let keyword = req.body.keyword || req.query.keyword || req.param.keyword || req.params.keyword || "";

@@ -105,12 +105,15 @@ const ProfilePageUser = (req, res, next) => {
 /** Modify Page */
 const ModifyPageUser = (req, res, next) => {
     console.log("Admin User Modify Page");
-    res.render('/admin/User/profile');
+    res.render('/admin/User/profile', {
+        _csrf: req.csrfToken(),
+    });
 };
 
 /** Modify Do */
 const ModifyDoUser = (req, res, next) => {
     console.log("Admin User Modify Do");
+    return res.json("");
 };
 
 module.exports = {

@@ -8,10 +8,10 @@ const AdminUserRouter = (auth, csurf) => {
     /** Admin Main Page */
     router.get("", UserCtrl.MainPageUser);
     /** Admin Create Page */
-    router.get('/create', csurf, UserCtrl.RegistePageUser);
+    router.get('/signUp', csurf, UserCtrl.RegistePageUser);
     //router.get('/create', auth.isAuthenticated, UserCtrl.RegistePageUser);
     /** Admin Create Do */
-    router.post("/create", csurf, UserCtrl.RegisteDoUser);
+    router.post("/signUp", csurf, UserCtrl.RegisteDoUser);
     //router.post("/create", auth.isAuthenticated, UserCtrl.RegisteDoUser);
     /** Admin Login Page */
     router.get('/login', csurf, auth.isNotLogin, UserCtrl.LoginPageUser);

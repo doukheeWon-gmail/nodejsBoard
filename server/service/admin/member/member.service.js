@@ -1,5 +1,5 @@
 /** Admin User Dao */
-const _UserDao = require('../../../dao/admin/user/index.dao');
+const _UserDao = require('../../../dao/user/index.dao');
 const UserDao = _UserDao();
 /** password compare Module */
 const bcrypt = require('bcrypt-nodejs');

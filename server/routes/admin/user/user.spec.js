@@ -1,12 +1,15 @@
 /** Admin User Controller */
 const UserCtrl = require('../../../ctrl/admin/user/user.ctrl');
 /** Admin User Dao */
-const _UserDao = require('../../../dao/admin/user/index.dao');
+const _UserDao = require('../../../daoSplit/admin/user/index.dao');
 const UserDao = _UserDao();
 /** Password Encoder */
 const bcrypt = require('bcrypt-nodejs');
 /** Get Parsing Module */
 const cheerio = require('cheerio');
+
+var _csrfToken;
+
 /** Get _csrf get Value Function */
 function extractCsrfToken(res) {
     var $ = cheerio.load(res.text);
@@ -19,10 +22,10 @@ module.exports = (request, should, app) => {
     describe("User Dao Tests", () => {
         it("1) Admin User Insert Tests", (done) => {
             let Users = {
-                Email: "test@co.kr",
-                Password: bcrypt.hashSync("test"),
+                Email: "admin@co.kr",
+                Password: bcrypt.hashSync("admin"),
                 Name: "adminTest",
-                role: 'USER'
+                role: 'ADMIN'
             };
             UserDao.CreateUser(Users).then(result => {
                 //console.log("Insert Admin User : ", result);

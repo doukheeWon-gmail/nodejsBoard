@@ -1,5 +1,5 @@
 /** Board Dao */
-const _BoardDao = require('../../../dao/admin/board/index.dao');
+const _BoardDao = require('../../../dao/board/index.dao');
 const BoardDao = _BoardDao();
 /** Search Options Model Op */
 const models = require('../../../DataBase/Mysql/models/index');

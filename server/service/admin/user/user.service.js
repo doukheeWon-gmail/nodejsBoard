@@ -1,7 +1,7 @@
 /** Auth Login */
 const Auth = require('../../../auth/passport');
 /** Admin User Dao */
-const _UserDao = require('../../../dao/admin/user/index.dao');
+const _UserDao = require('../../../dao/user/index.dao');
 const UserDao = _UserDao();
 /** password compare Module */
 const bcrypt = require('bcrypt-nodejs');
@@ -48,19 +48,26 @@ const LogoutService = (req, res, next) => {
 
 /** Admin Profile Service */
 const ProfileService = (Users) => {
-    console.log("Admin Profile Service");
+    console.log("Admin Profile User Service");
     return UserDao.DetailUser(Users);
 };
 
 /** Admin Update Service */
 const UpdateService = (Users) => {
+    console.log("Admin Update User Service");
 
+};
+
+/** Admin Delete Service */
+const DeleteService = (Users) => {
+    console.log("Admin Delete User Service");
 };
 
 module.exports = {
     CreateService,
     ProfileService,
     UpdateService,
+    DeleteService,
     LoginService,
     LogoutService
 };

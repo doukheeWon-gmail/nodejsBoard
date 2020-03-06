@@ -14,11 +14,11 @@ const RememberMeStrategy = require('passport-remember-me').Strategy;
 /** password compare Module */
 const bcrypt = require('bcrypt-nodejs');
 /** Local DataBase Check Admin Users Dao */
-const _AdminUserDao = require('../dao/admin/user/index.dao');
-const AdminUserDao = _AdminUserDao();
-/** Local DataBase Check Users Dao */
-const _UserDao = require('../dao/customer/user/index.dao');
+const _UserDao = require('../dao/user/index.dao');
 const UserDao = _UserDao();
+
+
+
 
 /** Admin Local Auth */
 const AdminAuth = (req) => {
@@ -40,7 +40,7 @@ const AdminAuth = (req) => {
         };
 
         /** Admin User Find */
-        AdminUserDao.LoginUser(UserJson).then(result => {
+        UserDao.LoginUser(UserJson).then(result => {
             /** User Value Check */
             if (!result) {
                 console.log("Not Have User.");
