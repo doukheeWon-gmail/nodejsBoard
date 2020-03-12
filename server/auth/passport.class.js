@@ -14,7 +14,7 @@ const RememberMeStrategy = require('passport-remember-me').Strategy;
 /** password compare Module */
 const bcrypt = require('bcrypt-nodejs');
 /** Local DataBase Check Users Dao */
-const _AdminUserDao = require('../dao/admin/user/index.dao');
+const _AdminUserDao = require('../dao/user/index.dao');
 const AdminUserDao = _AdminUserDao();
 
 class Auth {
