@@ -1,110 +1,68 @@
+/** Upload Module */
 const multer = require('multer');
+/** File Module */
 const fs = require('fs');
 
-
-/**
- * multer storage define
- */
-const ImageUpload = (Dir) => {
-    if (Dir) {
-        var storage = multer.diskStorage({
+/** Upload Set up */
+const UploadImage = (Dirs) => {
+    let storage;
+    /** Dir Name Input(UserEmail) */
+    if (Dirs) {
+        storage = multer.diskStorage({
+            /** File Upload Save Path */
             destination: (req, res, callback) => {
-                var uploadDir = process.cwd() + '/upload/images' + Dir;
+                let uploadDirs = process.cwd() + "/public/upload/" + Dirs;
+                /** Make Upload User Directory Mkdir */
                 try {
-                    fs.mkdirSync(uploadDir);
+                    fs.mkdirSync(uploadDirs);
                 } catch (err) {
-                    if (err.code !== 'EEXIST') {
-                        console.log('image upload folder make error code ::: ', err.code);
-                        console.log('image upload folder make error ::: ', err);
+                    /** Not Already Folder Have Error */
+                    if (err.code != "EEXIST") {
+                        console.log("Upload Folder Make Error Code ::: ", err.code);
+                        console.log("Upload Folder Make Error ::: ", err);
                         throw err;
                     }
                 }
-                callback(null, uploadDir);
+                callback(null, uploadDirs);
             },
-            /**
-             * need to file name ?
-             */
         });
-        return multer({
-            storage: storage,
-            fileFilter: (req, file, callback) => {
-                var getType = file.mimetype.split('/');
-                var fileType = getType[1];
-                if (fileType == 'jpg' || fileType == 'png' || fileType == 'jpeg' || fileType == 'gif') {
-                    callback(null, true);
-                } else {
-                    req.validateErr = '<script>alert("not_image");</script>';
-                    callback(null, false, new Error('not_image'));
-                }
-            }
-        });
-    } else {
-        throw new Error('The parameter is omitted ...');
     }
-};
-
-
-/**
- * board image upload controller
- */
-const boardImageUpload = (req, res, next) => {
-    var upload = ImageUpload(req.session.userInfo.nickName).single('upload');
-    var upJsonData;
-    upload(req, res, (err) => {
-        if (err) {
-            if (err.code == 'LIMIT_FILE_SIZE') {
-                upJsonData = {
-                    "uploaded": 0,
-                    "fileName": '',
-                    "path": ''
-                };
-                var html;
-                html = "";
-                html += "<script type='text/javascript'>";
-                html += " var funcNum = " + req.query.CKEditorFuncNum + ";";
-                html += " var url = \"/images/" + upJsonData.path + "/" + upJsonData.fileName + "\";";
-                html += " var message = \"too big file\";";
-                html += " window.parent.CKEDITOR.tools.callFunction(funcNum, url, message);";
-                html += "</script>";
-                res.send(html);
-                res.end('<script>alert("too big file");</script>');
+    return multer({
+        storage: storage,
+        fileFilter: (req, file, callback) => {
+            let fileType = file.mimetype.split('/')[1];
+            console.log("File Filter Get File : " + file);
+            console.log("Get File Format : " + fileType);
+            console.log("Get File Original Name : " + file.originalname);
+            if (fileType === "jpg" || fileType == "png" || fileType === "jpeg" || fileType === "gif") {
+                console.log("Image Type Format");
+                return callback(null, true);
             } else {
-                return next(err);
+                console.log("Not Image File");
+                return callback(null, false);
             }
-        } else if (req.validateErr) {
-            const validateErr = req.validateErr;
-            req.validateErr = "";
-            upJsonData = {
-                uploaded: 0,
-                fileName: '',
-                path: ''
-            };
-            var html;
-            html = "";
-            html += "<script type='text/javascript'>";
-            html += " var funcNum = " + req.query.CKEditorFuncNum + ";";
-            html += " var url = \"/images/" + upJsonData.path + "/" + upJsonData.fileName + "\";";
-            html += " var message = \"not image file\";";
-            html += " window.parent.CKEDITOR.tools.callFunction(funcNum, url, message);";
-            html += "</script>";
-            res.send(html);
-            return res.end(validateErr);
-        } else {
-            upJsonData = {
-                "uploaded": 1,
-                "fileName": req.file.filename,
-                "path": req.session.info.id
-            };
-            console.log('file size ::::: ', req.file.size);
-            var html;
-            html = "";
-            html += "<script type='text/javascript'>";
-            html += " var funcNum = " + req.query.CKEditorFuncNum + ";";
-            html += " var url = \"/images/" + upJsonData.path + "/" + upJsonData.fileName + "\";";
-            html += " var message = \"업로드 완료\";";
-            html += " window.parent.CKEDITOR.tools.callFunction(funcNum, url, message);";
-            html += "</script>";
-            res.send(html);
+
         }
     });
+};
+
+/** Test Controller */
+const testUpload = (req, res, next) => {
+    /** Form filed is upload and Multer Setting */
+    let uploadMulter = UploadImage(req).single('upload');
+    uploadMulter((req, res, err) => {
+        if (err) {
+            return next(err);
+        }
+        /** get File Name */
+        console.log("Get File Original Name : " + req.file.originalname);
+        /** Encoding File Name */
+        console.log("Get File Encoding Name : " + req.file.filename);
+        res.json(1);
+    });
+};
+
+/** Upload Controller Export */
+module.exports = {
+
 };
