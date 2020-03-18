@@ -1,0 +1,17 @@
+{
+  "name": "portfolio",
+  "description": "",
+  "main": "",
+  "authors": [
+    "duckhee <fain9301@yahoo.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/doukhee/nodejsBoard",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
