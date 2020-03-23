@@ -1,10 +1,15 @@
 /** Upload Module */
 const multer = require('multer');
+/** UUID */
+const UUID = require('uuid');
 /** File Module */
 const fs = require('fs');
+/** Default DownLoad Path */
+const ROOT_PATH = process.cwd() + "/public/upload/";
 
 /** Upload Set up */
 const UploadImage = (Dirs) => {
+    console.log("Make Upload Setting Dir :" + Dirs);
     let storage;
     /** Dir Name Input(UserEmail) */
     if (Dirs) {
@@ -25,6 +30,9 @@ const UploadImage = (Dirs) => {
                 }
                 callback(null, uploadDirs);
             },
+            filename: (req, file, callback) => {
+                callback(null, UUID.v4().toString() + "_" + file.originalname);
+            }
         });
     }
     return multer({
@@ -46,23 +54,46 @@ const UploadImage = (Dirs) => {
     });
 };
 
+/** Board Upload Controller */
+const BoardUpload = (req, res, next) => {
+    let uploadMulter = UploadImage("tester").single("upload");
+    uploadMulter(req, res, (err) => {
+        if (err) {
+
+            return next(err);
+        }
+        /** Get File Name */
+        console.log("Get File Original File Name : " + req.file.originalname);
+        console.log("Get File Encoding File Name : " + req.file.filename);
+
+    });
+};
+
+/** Board File Download Controller */
+const BoardDownload = (req, res, next) => {
+
+};
+
 /** Test Controller */
 const testUpload = (req, res, next) => {
+    console.log("Ctrl");
     /** Form filed is upload and Multer Setting */
-    let uploadMulter = UploadImage(req).single('upload');
-    uploadMulter((req, res, err) => {
+    let uploadMulter = UploadImage("tester").single('upload');
+    uploadMulter(req, res, (err) => {
+        console.log("Multer");
         if (err) {
+            console.log("ERROR");
             return next(err);
         }
         /** get File Name */
         console.log("Get File Original Name : " + req.file.originalname);
         /** Encoding File Name */
         console.log("Get File Encoding Name : " + req.file.filename);
-        res.json(1);
+        return res.json(1);
     });
 };
 
 /** Upload Controller Export */
 module.exports = {
-
+    testUpload
 };

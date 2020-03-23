@@ -30,4 +30,6 @@ module.exports = (app, csurf) => {
     /** Customer Board Router */
     app.use("/boards", BoardRouter(Auth, csurf));
 
+
+
 };
