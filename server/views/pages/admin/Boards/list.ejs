@@ -56,7 +56,9 @@
                   <td>Update Time</td>
                 </tr>
                 <%if(list){%>
+                  
                   <%list.forEach(item=>{%>
+                  
                   <tr style="text-align:center;">
                     <td ><input type="checkbox"  name="check" value="<%=item.id%>"></td>
                     <td><a href="/admin/boards/view?bno=<%=item.id%>"><%=item.title%></a></td>
@@ -70,29 +72,22 @@
                 <%}%>
               </table>
               <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate" style="text-align:center;">
+                <!-- Page Maker Need To JS FORM DO -->
                 <ul class="pagination">
-                  <%if(Search.type){%>
-                    <%if(Search.keyword){%>
-                      <li class="paginate_button previous" id="example2_previous"><a href="/admin/boards/list?page=<%=parseInt(curPage) -1 <= 0 ? 1 : parseInt(curPage)-1 %>&type=<%=Search.type%>&keyword=<%=Search.keyword%>" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a></li>
-                    <%}%>
-                  <%}else{%>
-                  <li class="paginate_button previous" id="example2_previous"><a href="/admin/boards/list?page=<%=parseInt(curPage) -1 <= 0 ? 1 : parseInt(curPage)-1 %>" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a></li>
+                  <% if(PageMaker.prev != false){%>
+                    <li class="paginate_button previous"  id="example2_previous"><a href="/admin/boards/list?page=<%=PageMaker.startPage - 1%>" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a></li>
                   <%}%>
-                  <%for(let i = 1; i <= MaxPage; i++){%>
-                    <%if(Search.type){%>
-                      <%if(Search.keyword){%>
-                        <li class="paginate_button <%= parseInt(curPage) == parseInt(i) ? 'active':'' %>"><a href="/admin/boards/list?page=<%=i%>&type=<%=Search.type%>&keyword=<%=Search.keyword%>"><%=i%></a></li>
+                  <%if(PageMaker.startPage <PageMaker.endPage){%>
+                    <%for(var i = PageMaker.startPage; i <= PageMaker.endPage; i++){%>
+                      <%if(i == PageMaker.curPage){%>
+                        <li class="paginate_button active"><a href="/admin/boards/list?page=<%=i%>"><%=i%></a></li>
+                      <%}else{%>
+                        <li class="paginate_button"><a href="/admin/boards/list?page=<%=i%>"><%=i%></a></li>
                       <%}%>
-                    <%}else{%>
-                      <li class="paginate_button <%= parseInt(curPage) == parseInt(i) ? 'active':'' %>"><a href="/admin/boards/list?page=<%=i%>"><%=i%></a></li>
                     <%}%>
                   <%}%>
-                  <%if(Search.type){%>
-                    <%if(Search.keyword){%>
-                      <li class="paginate_button next" id="example2_next"><a href="/admin/boards/list?page=<%=parseInt(curPage)+1 < MaxPage ? parseInt(curPage)+1 : MaxPage %>&type=<%=Search.type%>&keyword=<%=Search.keyword%>" aria-controls="example2" data-dt-idx="7" tabindex="0">Next</a></li>
-                    <%}%>
-                  <%}else{%>
-                  <li class="paginate_button next" id="example2_next"><a href="/admin/boards/list?page=<%=parseInt(curPage)+1 < MaxPage ? parseInt(curPage)+1 : MaxPage %>" aria-controls="example2" data-dt-idx="7" tabindex="0">Next</a></li>
+                  <%if(PageMaker.next != false){%>
+                    <li class="paginate_button next" id="example2_next"><a href="/admin/boards/list?page=<%=PageMaker.endPage + 1%>" aria-controls="example2" data-dt-idx="7" tabindex="0">Next</a></li>
                   <%}%>
                 </ul>
               </div>

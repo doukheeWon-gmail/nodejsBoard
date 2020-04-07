@@ -32,14 +32,113 @@ const UpdateBoard = (Boards) => {
 };
 
 /** Page List Board */
+const pageBoard = (Boards) => {
+    return new Promise((resolve, reject) => {
+        let options = null;
+        /** Search Options */
+        if (Boards.type && Boards.keyword) {
+            /** Search Option Add */
+            switch (Boards.type) {
+                case "t":
+                    options.title = {
+                        [models.Sequelize.Op.substring]: "%" + Boards.keyword + "%"
+                    };
+                    break;
+                case "w":
+                    options.writer = {
+                        [models.Sequelize.Op.substring]: "%" + Boards.keyword + "%"
+                    };
+                    break;
+                case "c":
+                    options.content = {
+                        [models.Sequelize.Op.substring]: "%" + Boards.keyword + "%"
+                    };
+                    break;
+
+            }
+        }
+        /** Option Check  */
+        console.log("optioins Check : " + options);
+
+        /** Get Total Board Count */
+        BoardDao.CountBoard(options).then(total => {
+            /** Offset Page */
+            let offset = Boards.page < 0 ? 0 : ((parseInt(Boards.page) - 1) * parseInt(Boards.amount));
+            /** End Page Set */
+            let endPage = parseInt(Math.ceil((Boards.page) / 10.0) * 10);
+            /** Start Page */
+            let startPage = (endPage - 9) < 0 ? 1 : (endPage - 9);
+            /** Real End Page */
+            let RealEnd = Math.ceil((total * 1.0) / Boards.amount);
+            /** Previous Boolean Check */
+            let prevFlag = false;
+            /** Next Boolean Check */
+            let nextFlag = false;
+            /** end page set */
+            if (RealEnd <= endPage) {
+                endPage = RealEnd;
+            }
+            /** Previous Boolean Set */
+            prevFlag = startPage > 1 ? true : false;
+            /** Next Boolean Set */
+            nextFlag = endPage < RealEnd ? true : false;
+            /** Make List Options */
+            let ListOptions = {
+                offset: offset,
+                endPage: endPage,
+                startPage: startPage,
+                RealEnd: RealEnd,
+                prevFlag: prevFlag,
+                nextFlag: nextFlag,
+                curPage: Boards.page,
+                amount: Boards.amount,
+                Search: options
+            };
+            /** Options Check */
+            //console.log("Get LIST VALUE : " + JSON.stringify(ListOptions));
+            /** Board Value List Get */
+            BoardDao.ListBoard(ListOptions).then(result => {
+                /** PageMaker */
+                let PageMaker = {
+                    prev: prevFlag,
+                    next: nextFlag,
+                    startPage: startPage,
+                    endPage: endPage,
+                    curPage: Boards.page
+                };
+                /** Return Paging */
+                let Returns = {
+                    Boards: result,
+                    pageMaker: PageMaker
+                };
+                return resolve(Returns);
+
+            }).catch(err => {
+                console.log("Admin Board Service List Error Code ::: ", err.code);
+                console.log("Admin Board Service List Error ::: ", err);
+                return reject(err);
+            });
+        }).catch(err => {
+            console.log("Admin Board Service List Count Error Code ::: ", err.code);
+            console.log("Admin Board Service List Count Error ::: ", err);
+            return reject(err);
+        });
+    });
+};
+
+/** Page List Board */
 const ListBoard = (Boards) => {
+    let emptyJson;
     return new Promise((resolve, reject) => {
         if (Boards.type == null) {
-            BoardDao.CountBoard().then(count => {
+            emptyJson = null;
+            BoardDao.CountBoard(emptyJson).then(count => {
                 console.log("Count Board : ", count);
                 let AllCount = count;
                 let offset = 0;
                 let MaxPage = 0;
+                let prevPage = false;
+                let nextPage = false;
                 if (parseInt(AllCount % 10) !== 0) {
                     MaxPage = parseInt(AllCount / 10) + 1;
                 } else if (parseInt(AllCount) === 0) {
@@ -53,13 +152,13 @@ const ListBoard = (Boards) => {
                 if (Boards.page > MaxPage) {
                     offset = 10 * (MaxPage - 1);
                 }
-                let List = { offset: offset };
+                let List = { offset: offset, amount: Boards.amount };
                 BoardDao.ListBoard(List).then(result => {
                     let Returns = {
                         offset: offset,
                         MaxPage: MaxPage,
                         List: result,
-                        curPage: Boards.page
+                        curPage: Boards.page,
                     };
                     return resolve(Returns);
                 });
@@ -104,7 +203,7 @@ const ListBoard = (Boards) => {
                 if (Boards.page > MaxPage) {
                     offset = 10 * (MaxPage);
                 }
-                let List = { offset: offset, Search: options };
+                let List = { offset: offset, amount: Boards.amount, Search: options };
                 BoardDao.ListBoard(List).then(result => {
                     let Returns = {
                         offset: offset,
@@ -174,6 +273,7 @@ module.exports = {
     CreateBoard,
     GetBoard,
     SearchBoard,
+    pageBoard,
     ListBoard,
     UpdateBoard,
     DeleteBoard,

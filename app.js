@@ -27,8 +27,8 @@ const passport = require('passport');
 const AdminRouter = require('./server/routes/admin/index.router');
 const WWWRouter = require('./server/routes/customer/index.router');
 const MobileRouter = require('./server/routes/mobile/index.router');
-/** Test Router */
-const testRouter = require('./server/routes/test.router');
+
+
 var app = express();
 
 /** middle ware */
@@ -128,8 +128,7 @@ AdminRouter(app, csurfMiddleWare);
 WWWRouter(app, csurfMiddleWare);
 /** Mobile Router Registe */
 MobileRouter(app, csurfMiddleWare);
-/** Test Router Registe */
-testRouter(app, csurfMiddleWare);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     // let err = new Error("Not Found Page");

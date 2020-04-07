@@ -498,12 +498,13 @@
             <div class="box-body">
               <div class="form-group">
                 <label for="">Title</label>
-                <input type="text" class="form-control" disabled value="<%=boards.title%>">
+                <input type="text" class="form-control" readonly disabled value="<%=boards.title%>">
               </div>
               <!--./form-group-->
               <div class="form-group">
                 <label for="">Content</label>
-                <input type="text" class="form-control" disabled value="<%=boards.content%>">
+                <textarea class="form-control" name="content" id="content" rows="16"
+				                placeholder="Enter ..."><%=boards.content%></textarea>
               </div>
               <!--./form-group-->
             </div>
@@ -578,6 +579,26 @@
 </body>
 <script>
   $(document).ready(function(){
+    /** CKEDITOR Set Up */
+    CKEDITOR.replace('content',{
+      /** language Setting */
+      language:'ko',
+      /** height */
+      height:750,
+      /** ReadOnly Mode */
+      readOnly:true,
+      /** resize false */
+      resize_enabled:false,
+       // Define the toolbar groups as it is a more accessible solution.
+      toolbarGroups: [],
+      // Remove the redundant buttons from toolbar groups defined above.
+      removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
+      //파일 이미지 업로드 주소
+      filebrowserImageUploadUrl:'',
+      filebrowserUploadUrl:''
+    });
+    /** Board Set */
+    
     /*
     modifyBtn
     removeBtn

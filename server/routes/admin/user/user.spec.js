@@ -88,7 +88,9 @@ module.exports = (request, should, app) => {
         });
     });
     /** User Url Get Tests */
-    describe("GET User Tests", () => {
+    describe("User URL Tests", () => {
+        /** Get _csrf Token */
+        var token;
         /** Admin User Test Case(1) */
         it("1) Main Page Tests", (done) => {
             request(app)
@@ -115,7 +117,29 @@ module.exports = (request, should, app) => {
                         console.log("Admin User Tests Error ::: ", err);
                         throw err;
                     }
+                    token = extractCsrfToken(res);
                     console.log("test : ", extractCsrfToken(res));
+                    return done();
+                });
+        });
+        /** Admin User Test Case(2) - POST */
+        it("2) POST Login Page Tests", (done) => {
+            /** Send User Login Info */
+            let LoginInfo = {
+                email: 'admin@co.kr',
+                password: 'admin',
+                _csrf: token
+            };
+            request(app)
+                .post("/admin/user/login")
+                .expect(200)
+                .send(LoginInfo)
+                .end((err, res) => {
+                    if (err) {
+                        console.log("Admin User Post Tests Error Code ::: " + err.code);
+                        console.log("Admin User Post Tests Error ::: " + err);
+                        throw err;
+                    }
                     return done();
                 });
         });
@@ -140,44 +164,5 @@ module.exports = (request, should, app) => {
         });
         */
     });
-    /** Get Method End */
-    /** Post Url Tests */
-    describe("POST User Tests", () => {
-        /** Admin User Test Case(1) */
-        let admin = {
-            email: 'admin@co.kr',
-            password: 'admin'
-        };
-        /** Admin Login Page Post Tests */
-        /*
-        it("1) Login Tests", (done) => {
-            request(app)
-                .post('/admin/users/login')
-                .send(admin)
-                .expect(200)
-                .end((err, res) => {
-                    if (err) {
-                        console.log("Admin User Tests Error Code ::: ", err.code);
-                        console.log("Admin User Tests Error ::: ", err);
-                        throw err;
-                    }
-                    return done();
-                });
-        });
-        */
-        /** Admin Update Page Post Tests */
-        /*
-        it("2) Update Tests", (done) => {
-            request(app)
-                .post('/admin/users/update')
-                .send()
-                .end((err, res) => {
-                    console.log("Admin User Tests Error Code ::: ", err.code);
-                    console.log("Admin User Tests Error ::: ", err);
-                    throw err;
-                });
-            return done();
-        });
-        */
-    });
+
 };

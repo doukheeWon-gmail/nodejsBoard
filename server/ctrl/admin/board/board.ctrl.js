@@ -111,24 +111,25 @@ const ListPage = (req, res, next) => {
     console.log("Admin Board List Page");
     /** get Page Number */
     let page = req.body.page || req.query.page || req.param.page || req.params.page || 1;
+    /** get Amount Number */
+    let amount = parseInt(req.body.amount || req.query.amount || req.param.amount || req.params.amount || 10);
     /** get Search Options */
     let keyword = req.body.keyword || req.query.keyword || req.param.keyword || req.params.keyword || "";
     let type = req.body.type || req.query.type || req.param.type || req.params.type || "";
     let Search = {};
     if (keyword !== "" && type !== "") {
-        Search = { page: page, keyword: keyword, type: type };
+        Search = { page: page, amount: amount, keyword: keyword, type: type };
     } else {
-        Search = { page: page };
+        Search = { page: page, amount: amount };
     }
     /** Admin Board Paging List Service */
-    Service.ListBoard(Search).then(result => {
-        console.log("Result : ", result);
+    Service.pageBoard(Search).then(result => {
+        //console.log("Result : ", JSON.stringify(result));
         return res.render('admin/Boards/list', {
             title: "",
             login: req.user,
-            list: result.List,
-            MaxPage: result.MaxPage,
-            curPage: result.curPage,
+            list: result.Boards,
+            PageMaker: result.pageMaker,
             Search: Search
         });
     }).catch(err => {

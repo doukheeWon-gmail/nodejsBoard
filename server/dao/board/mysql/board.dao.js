@@ -101,7 +101,7 @@ const CountUpBoard = (BoardsIdx) => {
 const ListBoard = (Boards) => {
     return new Promise((resolve, reject) => {
         models.web_board.findAll({
-            limit: 10,
+            limit: Boards.amount,
             offset: Boards.offset,
             where: Boards.Search,
             order: [
