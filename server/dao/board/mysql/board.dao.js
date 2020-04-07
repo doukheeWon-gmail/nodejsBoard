@@ -27,6 +27,7 @@ const FindBoard = (BoardsIdx) => {
                 where: {
                     id: BoardsIdx
                 },
+
                 attributes: ['id', 'title', 'content', 'writer'],
                 include: [{
                     model: models.web_reply,

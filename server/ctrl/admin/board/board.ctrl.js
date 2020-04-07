@@ -81,7 +81,8 @@ const ViewPage = (req, res, next) => {
         return res.redirect('/admin/boards/list');
     }
     Service.GetBoard(bno).then(result => {
-        console.log("result : ", result);
+        //console.log("result : ", result);
+        console.log("req userr : " + req.user);
         return res.render('admin/Boards/view', {
             title: "",
             boards: result,

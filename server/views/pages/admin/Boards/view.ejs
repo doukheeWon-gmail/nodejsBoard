@@ -510,8 +510,8 @@
             </div>
             <!--./box-body-->
             <div class="box-footer">
-              <%if(user){ %>
-                <%if(user.role == "ADMIN" || user.Email == boards.writer){%>
+              <%if(login){ %>
+                <%if(login.role == "ADMIN" || login.Email == boards.writer){%>
                 <form name="deleteForm"></form>
                 <button id="modifyBtn" type="button" class="btn btn-warning">Modify</button> 
 	              <button id="removeBtn" type="button" class="btn btn-danger">REMOVE</button> 
@@ -528,8 +528,8 @@
                   <!--./box-header-->
                   <div class="box-body">
                     <label for="exampleInputEmail1">Writer</label> 
-					          <%if(user){%>
-                      <input class="form-control" type="text"  readonly  id="newReplyWriter" value="<%=user.Email%>"> 
+					          <%if(login){%>
+                      <input class="form-control" type="text"  readonly  id="newReplyWriter" value="<%=login.Email%>"> 
                     <%}else{%>
                       <input class="form-control" type="text"  readonly  id="newReplyWriter" value=""> 
                     <%}%>

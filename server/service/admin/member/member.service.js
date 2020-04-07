@@ -23,26 +23,30 @@ const CreateMember = (Users) => {
 
 /** Member Profile */
 const ProfileMember = (Users) => {
+    return new Promise((resolve, reject) => {
 
+    });
 };
 
 /** Member Update */
 const UpdateMember = (Users) => {
+    return new Promise((resolve, reject) => {
 
+    });
 };
 
 /** Member List */
 const ListMember = (Uesrs) => {
-    UserDao.CountMember().then(result => {
-
-    }).catch(err => {
+    return new Promise((resolve, reject) => {
 
     });
 };
 
 /** Member Delete */
 const DeleteMember = (Users) => {
+    return new Promise((resolve, reject) => {
 
+    });
 };
 
 /** Member Search by email, name, Permission */
