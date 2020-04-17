@@ -1,3 +1,6 @@
+/** Admin Member Service */
+const Service = require("../../../service/admin/member/member.service");
+
 /** Admin Member Main Page */
 const MainPage = (req, res, next) => {
     console.log("Admin Member Main Page Redirect List Page");
@@ -49,16 +52,37 @@ const DeleteDo = (req, res, next) => {
 
 /** Admin Member List Page */
 const ListPage = (req, res, next) => {
-    let Page = req.body.page || req.query.page || req.param.page || req.params.page || "";
+    /** get Page Number */
+    let page = req.body.page || req.query.page || req.param.page || req.params.page || 1;
+    /** get Amount Number */
+    let amount = parseInt(req.body.amount || req.query.amount || req.param.amount || req.params.amount || 10);
+    /** get Search Options */
     let keyword = req.body.keyword || req.query.keyword || req.param.keyword || req.params.keyword || "";
     let type = req.body.type || req.query.type || req.param.type || req.params.type || "";
-    let tmp = `page Number : ${Page}, Keyword : ${keyword}, type : ${type}`;
-    console.log(tmp);
-    return res.render("./admin/Member/list", {
-        title: 'AdminLTE 2 | Member Create',
-        login: req.user,
-        list: null
+    /** Make Search Or Paging Info */
+    let Search = {};
+    if (keyword !== "" && type !== "") {
+        Search = { page: page, amount: amount, keyword: keyword, type: type };
+    } else {
+        Search = { page: page, amount: amount };
+    }
+    console.log("Get Search : " + JSON.stringify(Search));
+    /** Paging Member Service List */
+    Service.PageMember(Search).then(result => {
+        console.log("RESULT : " + JSON.stringify(result));
+        return res.render("./admin/Member/list", {
+            title: 'AdminLTE 2 | Member Create',
+            login: req.user,
+            list: result.Members,
+            PageMaker: result.pageMaker,
+            Search: Search
+        });
+    }).catch(err => {
+        console.log("Admin List Member Error Code ::: ", err.code);
+        console.log("Admin List Member Error ::: ", err);
+        return next(err);
     });
+
 };
 
 module.exports = {

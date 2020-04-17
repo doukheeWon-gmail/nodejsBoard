@@ -64,21 +64,62 @@
                 <tbody>
                 <%if(list){%>
                   <% list.forEach(items=>{%>
+                    <tr style="text-align:center;">
+                    <td ><input type="checkbox"  name="check" value="<%=items.id%>"></td>
+                    <td><a href="/admin/boards/view?bno=<%=items.id%>"><%=items.userEmail%></a></td>
+                    <td><%=items.userName%></td>
+                    <td><span class="badge bg-aqua"><%=items.role%></span></td>
+                    <td><%=items.createdAt.getFullYear() + "년" + (items.createdAt.getMonth() + 1) + "월" + (items.createdAt.getDate()) + "일" + (items.createdAt.getHours()) + "시" + (items.createdAt.getMinutes()) + "분" %></td>
+                    <td><%=items.updatedAt.getFullYear() + "년" + (items.updatedAt.getMonth() + 1) + "월" + (items.updatedAt.getDate()) + "일" + (items.updatedAt.getHours()) + "시" + (items.updatedAt.getMinutes()) + "분" %></td>
+                  </tr>
                   <%});%>
                 <%}%>
                 </tbody>
                 <!--./tbody-->
               </table>
               <!--./table-->
-              <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate" style="text-align:center;"> 
+              <!-- <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate" style="text-align:center;"> 
                 <ul class="pagination">
                   <li class="paginate_button previous"  id="example2_previous"><a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a></li>
                   <li class="paginate_button next" id="example2_next"><a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0">Next</a></li>
+                </ul>
+              </div> -->
+              <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate" style="text-align:center;"> 
+                <ul class="pagination">
+                  <%if(PageMaker.prev != false){%>
+                    <li class="pagination_button previous" id="example2_previous"><a href="/admin/members/list?page=<%=PageMaker.startPage -1 %>" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a></li>
+                  <%}%>
+                  
+                  <%if(PageMaker.startPage <=PageMaker.endPage){%>
+                    <%for(var i = PageMaker.startPage; i <= PageMaker.endPage; i++){%>
+                      
+                      <%if(i == PageMaker.curPage){%>
+                        <li class="paginate_button active"><a href="/admin/members/list?page=<%=i%>"><%=i%></a></li>
+                      <%}else{%>
+                        <li class="paginate_button"><a href="/admin/members/list?page=<%=i%>"><%=i%></a></li>
+                      <%}%>
+                    <%}%>
+                  <%}%>
+                  <%if(PageMaker.next != false){%>
+                    <li class="paginate_button next" id="example2_next"><a href="/admin/members/list?page=<%=PageMaker.endPage + 1%>" aria-controls="example2" data-dt-idx="7" tabindex="0">Next</a></li>
+                  <%}%>
                 </ul>
               </div>
               <!--./paging-->
             </div>
             <!--./box-body-->
+            <div class="box-footer">
+              <div class="pull-left">
+                <button type="button" class="btn btn-flat btn-danger" id="DeleteBtn">Delete</button>
+              </div>
+              <!-- ./pull-left -->
+              <div class="pull-right">
+                <button type="button" class="btn btn-flat btn-warning" id="ModifyBtn">Modify</button>
+                <button type="button" class="btn btn-flat btn-primary" id="RegisteBtn">Registe</button>
+              </div>
+              <!-- ./pull-right -->
+            </div>
+            <!-- ./box-footer -->
           </div>
           <!--./box-->
         </div>
@@ -96,4 +137,26 @@
 <!-- ./wrapper -->
 <%- include ("../../../partials/admin/include/javascript.ejs") %>
 </body>
+<script>
+  $(document).ready(function(){
+    /** Check Box all */
+     function AllCheck(){
+      $("#AllCheck").click(function(){
+        if($(this).is(':checked')){
+          $("input[name=check]").prop("checked", true);
+        }else{
+          $("input[name=check]").prop("checked", false);
+        }
+      });
+    }
+    /** Registe Page */
+    function Registe(){
+      $("#RegisteBtn").click(function(){
+        document.location.href="/admin/members/create";
+      });
+    }
+    /** */
+    AllCheck();
+  });
+</script>
 </html>

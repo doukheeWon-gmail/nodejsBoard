@@ -77,7 +77,7 @@
                   <% if(PageMaker.prev != false){%>
                     <li class="paginate_button previous"  id="example2_previous"><a href="/admin/boards/list?page=<%=PageMaker.startPage - 1%>" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a></li>
                   <%}%>
-                  <%if(PageMaker.startPage <PageMaker.endPage){%>
+                  <%if(PageMaker.startPage <= PageMaker.endPage){%>
                     <%for(var i = PageMaker.startPage; i <= PageMaker.endPage; i++){%>
                       <%if(i == PageMaker.curPage){%>
                         <li class="paginate_button active"><a href="/admin/boards/list?page=<%=i%>"><%=i%></a></li>

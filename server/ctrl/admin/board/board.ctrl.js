@@ -117,6 +117,7 @@ const ListPage = (req, res, next) => {
     /** get Search Options */
     let keyword = req.body.keyword || req.query.keyword || req.param.keyword || req.params.keyword || "";
     let type = req.body.type || req.query.type || req.param.type || req.params.type || "";
+    /** Make Search Or Paging Info */
     let Search = {};
     if (keyword !== "" && type !== "") {
         Search = { page: page, amount: amount, keyword: keyword, type: type };

@@ -1,6 +1,10 @@
 /** Admin User Dao */
-const _UserDao = require('../../../dao/user/index.dao');
-const UserDao = _UserDao();
+const _MemberDao = require('../../../dao/member/index.dao');
+const MemberDao = _MemberDao();
+/** Search Options Model */
+const models = require('../../../DataBase/Mysql/models/index');
+/** Page Maker */
+const PageMakers = require('../../../utils/PageMaker.class');
 /** password compare Module */
 const bcrypt = require('bcrypt-nodejs');
 
@@ -42,6 +46,58 @@ const ListMember = (Uesrs) => {
     });
 };
 
+/** Page List Member */
+const PageMember = (Users) => {
+    return new Promise((resolve, reject) => {
+        let options = null;
+        if (Users.type && Users.keyword) {
+            options = {};
+            switch (Users.type) {
+                case "e":
+                    options.userEmail = {
+                        [models.Sequelize.Op.substring]: "%" + Users.keyword + "%"
+                    };
+                    break;
+                case "n":
+                    options.userName = {
+                        [models.Sequelize.Op.substring]: "%" + Users.keyword + "%"
+                    };
+                    break;
+                case "r":
+                    console.log("Get Role Switch");
+                    options.role = {
+                        [models.Sequelize.Op.substring]: "%" + Users.keyword + "%"
+                    };
+                    break;
+            }
+        }
+        /** Search Option Check */
+        console.log("Options : " + options);
+        /** Get Total Member Count */
+        MemberDao.CountMember(options).then(total => {
+            /** Get Paging Info */
+            let ListOptions = new PageMakers(Users, total, options);
+            /** Member Value List Get */
+            MemberDao.PagingMember(ListOptions).then(result => {
+                /** Make Return Value Object */
+                let ReturnValue = {
+                    Members: result,
+                    pageMaker: ListOptions
+                };
+                return resolve(ReturnValue);
+            }).catch(err => {
+                console.log("Admin Member Paging Error Code ::: ", err.code);
+                console.log("Admin Member Paging Error ::: ", err);
+                return reject(err);
+            });
+        }).catch(err => {
+            console.log("Admin Member Count Error Code ::: ", err.code);
+            console.log("Admin Member Count Error ::: ", err);
+            return reject(err);
+        });
+    });
+};
+
 /** Member Delete */
 const DeleteMember = (Users) => {
     return new Promise((resolve, reject) => {
@@ -57,6 +113,7 @@ const SearchMember = (Users) => {
 module.exports = {
     CreateMember,
     ProfileMember,
+    PageMember,
     UpdateMember,
     DeleteMember,
     SearchMember

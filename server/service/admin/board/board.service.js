@@ -39,6 +39,7 @@ const pageBoard = (Boards) => {
         let options = null;
         /** Search Options */
         if (Boards.type && Boards.keyword) {
+            options = {};
             /** Search Option Add */
             switch (Boards.type) {
                 case "t":

@@ -19,11 +19,29 @@ const CheckEmailMember = (Members) => {
 
 const CreateMember = (Members) => {
     return new Promise((resolve, reject) => {
-        models.user.create({
-
-        }).then(result => {
-            return resolve(result);
+        models.user.findOrCreate({
+            where: {
+                userEmail: Members.Email
+            },
+            defaults: {
+                userEmail: Members.Email,
+                userPassword: Members.Password,
+                userName: Members.Name,
+                role: Members.role
+            }
+        }).spread((user, create) => {
+            if (create) {
+                /** Create User Success */
+                console.log("Create User. User : ", user.id);
+                return resolve(null);
+            } else {
+                /** Already Have User. */
+                console.log("Already Have User.");
+                return resolve(user);
+            }
         }).catch(err => {
+            console.log("Admin Member Create Error Code ::: ", err.code);
+            console.log("Admin Member Create Error ::: ", err);
             return reject(err);
         });
     });
@@ -31,7 +49,11 @@ const CreateMember = (Members) => {
 
 const UpdateMember = (Members) => {
     return new Promise((resolve, reject) => {
-        models.user.modify({}, {}).then(result => {
+        models.user.modify({
+            /** Change Value */
+        }, {
+            /** Search Options */
+        }).then(result => {
             return resolve(result);
         }).catch(err => {
             console.log("Admin Member Update Error Code ::: ", err.code);
@@ -88,7 +110,7 @@ const CountMember = (Options) => {
 const PagingMember = (Members) => {
     return new Promise((resolve, reject) => {
         models.user.findAll({
-            where: Members.options,
+            where: Members.Search,
             offset: Members.offset,
             limit: 10,
             order: [

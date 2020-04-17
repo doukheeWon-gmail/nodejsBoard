@@ -16,7 +16,17 @@ const CreateBoard = (Boards) => {
 
 const UpdateBoard = (Boards) => {
     return new Promise((resolve, reject) => {
-
+        models.web_board.update({
+            /** Change */
+        }, {
+            /** Where */
+        }).then(result => {
+            return resolve(result);
+        }).catch(err => {
+            console.log("Admin Board Update Error Code ::: ", err.code);
+            console.log("Admin Board Update Error ::: ", err);
+            return reject(err);
+        });
     });
 };
 
@@ -55,17 +65,19 @@ const DeleteBoard = (Boards) => {
 
             }
         }).then(result => {
-
+            return resolve(result);
         }).catch(err => {
-
+            console.loog("Admin Board Delete Dao Error Code ::: ", err.code);
+            console.loog("Admin Board Delete Dao Error ::: ", err);
+            return reject(err);
         });
     });
 };
 
-const CountBoard = (Options) => {
+const CountBoard = (options) => {
     return new Promise((resolve, reject) => {
         models.web_board.count({
-            where: Options
+            where: options
         }).then(result => {
             return resolve(result);
         }).catch(err => {
@@ -77,7 +89,24 @@ const CountBoard = (Options) => {
 };
 
 const PagingBoard = (Boards) => {
-    return new Promise((resolve, reject) => {});
+    return new Promise((resolve, reject) => {
+        models.web_board.findAll({
+            where: Boards.Search,
+            offset: Boards.offset,
+            limit: 10,
+            order: [
+                [
+                    'createdAt', 'DESC'
+                ]
+            ]
+        }).then(result => {
+            return resolve(result);
+        }).catch(err => {
+            console.log("Admin Board Dao Paging Error Code ::: ", err.code);
+            console.log("Admin Board Dao Paging Error ::: ", err);
+            return reject(err);
+        });
+    });
 };
 
 /** Count Board Number */
