@@ -12,19 +12,19 @@ const AdminMemberRouter = (auth, csurf) => {
     router.post('/create', csurf, auth.isAuthenticated, MemberCtrl.RegisteDo);
 
     /** Admin Member List Page */
-    router.get('/list', MemberCtrl.ListPage);
+    router.get('/list', auth.isAuthenticated, MemberCtrl.ListPage);
 
     /** Admin Member Modify Page */
-    router.get("/modify", MemberCtrl.ModifyPage);
+    router.get("/modify", csurf, auth.isAuthenticated, MemberCtrl.ModifyPage);
 
     /** Admin Member Modify Do */
-    router.post("/modify", MemberCtrl.ModifyDo);
+    router.post("/modify", csurf, auth.isAuthenticated, MemberCtrl.ModifyDo);
 
     /** Admin Member Detail Page */
-    router.get("/detail", MemberCtrl.ProfilePage);
+    router.get("/detail", auth.isAuthenticated, MemberCtrl.ProfilePage);
 
     /** Admin Member Delete Do */
-    router.post("/delete", MemberCtrl.DeleteDo);
+    router.post("/delete", csurf, auth.isAuthenticated, MemberCtrl.DeleteDo);
 
     return router;
 };
