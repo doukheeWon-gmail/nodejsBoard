@@ -17,9 +17,11 @@ const CreateMember = (Users) => {
             Password: bcrypt.hashSync(Users.Password, bcrypt.genSaltSync(5)),
             Name: Users.Name
         };
-        UserDao.CreateMember(_Users).then(result => {
+        MemberDao.CreateMember(_Users).then(result => {
             return resolve(result);
         }).catch(err => {
+            console.log("Admin Member Registe Error Code ::: ", err.code);
+            console.log("Admin Member Registe Error ::: ", err);
             return reject(err);
         });
     });
@@ -28,14 +30,22 @@ const CreateMember = (Users) => {
 /** Member Profile */
 const ProfileMember = (Users) => {
     return new Promise((resolve, reject) => {
-
+        UserDao.FindMember(Users).then(result => {
+            return resolve(result);
+        }).catch(err => {
+            console.log("Admin Member Profile Error Code ::: ", err.code);
+            console.log("Admin Member Profile Error ::: ", err);
+            return reject(err);
+        });
     });
 };
 
 /** Member Update */
 const UpdateMember = (Users) => {
     return new Promise((resolve, reject) => {
-
+        /** Update Object */
+        let _Users = {};
+        /** Search Idx */
     });
 };
 

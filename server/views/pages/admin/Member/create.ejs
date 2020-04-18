@@ -32,29 +32,30 @@
         <!--./box-header-->
         <div class="box-body">
           <form class="form-horizontal" name="memberRegisteForm" id="memberRegisteForm">
+            <input type="hidden" name="_csrf" value="<%=_csrf%>">
             <div class="form-group">
-              <label for="email" class="control-label col-sm-2">User Email</label>
+              <label for="email" class="control-label col-sm-2"><i class="glyphicon glyphicon-envelope" style="margin-right:15px;"></i>User Email</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" name="email" id="email">
               </div>
             </div>
             <!--./form-group-->
             <div class="form-group">
-              <label for="password" class="col-sm-2 control-label">User Password</label>
+              <label for="password" class="col-sm-2 control-label"><i class="fa fa-fw fa-lock" style="margin-right:15px;"></i>User Password</label>
               <div class="col-sm-8">
                 <input type="password" name="password" id="password" class="form-control">
               </div>
             </div>
             <!--./form-group-->
             <div class="form-group">
-              <label for="cpassword" class="col-sm-2 control-label">Confirm Password</label>
+              <label for="cpassword" class="col-sm-2 control-label"><i class="fa fa-fw fa-lock" style="margin-right:15px;"></i>Confirm Password</label>
               <div class="col-sm-8">
                 <input type="password" name="cpassword" id="cpassword" class="form-control">
               </div>
             </div>
             <!--./form-group-->
             <div class="form-group">
-              <label for="name" class="control-label col-sm-2">User Name</label>
+              <label for="name" class="control-label col-sm-2"><i class="fa fa-fw fa-user" style="margin-right:15px;"></i>User Name</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" name="name" id="name">
               </div>
@@ -66,11 +67,11 @@
         <!--./box-body-->
         <div class="box-footer">
           <div class='pull-left'>
-            <button type="button" class="btn btn-flat btn-danger">Cancel</button>
+            <button type="button" id="cancelBtn" class="btn btn-flat btn-danger">Cancel</button>
           </div>
           <!--./pull-left-->
           <div class="pull-right">
-            <button type="button" class="btn btn-flat btn-primary">Registe</button>
+            <button type="button" id="registeBtn" class="btn btn-flat btn-primary">Registe</button>
           </div>
           <!--./pull-right-->
         </div>
@@ -90,7 +91,130 @@
 </body>
 <script>
   $(document).ready(function(){
+    /** Reg Email */
+    function reEmail(_Email){
+      let re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+      return re.test(_Email);
+    }
+    /** Email Check */
+    function EmailCheck(){
+      let Email = $("#email").val();
+          if(Email === "" || Email === null){
+              swal.fire({
+                  type:'warning',
+                  title:'Email is Empty'
+              });
+              return false;
+          }
+          if(!reEmail(Email)){
+              swal.fire({
+                  type:'warning',
+                  title:'Not Email Type'
+              });
+              return false;
+          }
+          if(Email.indexOf(' ') !== -1){
+              swal.fire({
+                  type:'warning',
+                  title:'Email do not have space value'
+              });
+              return false;
+          }
+          return true;
+    }
 
+    /** Password Check */
+    function PasswordCheck(){
+      let Pass = $("#password").val();
+          let CPass = $("#cpassword").val();
+          if(Pass == null || Pass == ""){
+              swal.fire({
+                  type:'warning',
+                  title:'Password is Empty'
+              });
+              return false;
+          }
+          if(CPass == null || CPass == ""){
+              swal.fire({
+                  type:'warning',
+                  title:'Confirm Password Empty'
+              });
+              return false;
+          }
+          if(Pass.indexOf(' ') !== -1){
+              swal.fire({
+                  type:'warning',
+                  title:'Password do not have space value'
+              });
+              return false;
+          }
+          if(CPass.indexOf(' ') !== -1){
+              swal.fire({
+                  type:'warning',
+                  title:'Confirm Password do not have space value'
+              });
+              return false;
+          }
+          if(Pass !== CPass){
+              swal.fire({
+                  type:'warning',
+                  title:'Not Match Password and Confirm Password'
+              });
+              return false;
+          }
+          return true;
+    }
+
+    /** Name Check */
+    function NameCheck(){
+      let Name = $("#name").val();
+          if(Name == "" || Name == null){
+              swal.fire({
+                  type:'warning',
+                  title:'Name is Empty'
+              });
+              return false;
+          }
+          if(Name.indexOf(' ') !== -1){
+              swal.fire({
+                  type:'warning',
+                  title:'Name do not have space value'
+              });
+              return false;
+          }
+          return true;
+    }
+
+    /** Get Form */
+    const RegisteForm = $("#memberRegisteForm");
+    
+    /** password Enter */
+    $("input[name=name]").keydown(function(key){
+      if(key.keyCode == 13){
+        key.preventDefault();
+        if(EmailCheck() && PasswordCheck() && NameCheck()){
+          RegisteForm.attr("method","POST");
+          RegisteForm.attr("action", "/admin/members/create");
+          RegisteForm.submit();
+        }
+      }
+    });
+    
+    /** Create Btn */
+    $("#registeBtn").click(function(e){
+      e.preventDefault();
+      if(EmailCheck() && PasswordCheck() && NameCheck()){
+          RegisteForm.attr("method","POST");
+          RegisteForm.attr("action", "/admin/members/create");
+          RegisteForm.submit();
+      }
+    });
+
+    /** Go To List */
+    $("#cancelBtn").click(function(e){
+      document.location.href="/admin/members/list";
+    });
+    
   });
 </script>
 </html>

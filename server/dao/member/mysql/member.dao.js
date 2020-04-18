@@ -49,11 +49,11 @@ const CreateMember = (Members) => {
 
 const UpdateMember = (Members) => {
     return new Promise((resolve, reject) => {
-        models.user.modify({
+        models.user.modify(
             /** Change Value */
-        }, {
-            /** Search Options */
-        }).then(result => {
+            Members, {
+                /** Search Options */
+            }).then(result => {
             return resolve(result);
         }).catch(err => {
             console.log("Admin Member Update Error Code ::: ", err.code);
@@ -88,6 +88,8 @@ const FindMember = (Members) => {
         }).then(result => {
             return resolve(result);
         }).catch(err => {
+            console.log("Admin Member Find Error Code ::: ", err.code);
+            console.log("Admin Member Find Error ::: ", err);
             return reject(err);
         });
     });

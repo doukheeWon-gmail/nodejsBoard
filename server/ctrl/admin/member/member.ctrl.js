@@ -14,6 +14,7 @@ const RegistePage = (req, res, next) => {
     return res.render('./admin/Member/create', {
         _csrf: req.csrfToken(),
         title: 'AdminLTE 2 | Member Create',
+        msg: req.flash("MemberMsg"),
         login: req.user
     });
 };
@@ -21,7 +22,33 @@ const RegistePage = (req, res, next) => {
 /** Admin Member Registe Do */
 const RegisteDo = (req, res, next) => {
     console.log("Admin Member Regisge Do");
-    return res.json("");
+    let userEmail = req.body.email || req.query.email || req.params.email || req.param.email || "";
+    let userName = req.body.name || req.query.name || req.params.name || req.param.name || "";
+    let userPassword = req.body.password || req.query.password || req.params.password || req.param.password || "";
+
+    if (userEmail == "" || userName == "" || userPassword == "") {
+        /** Flash Msg Set */
+        req.flash("MemeberMsg", "빈칸 없이 입력해주세요.");
+        /** Redirect Member Create Page */
+        return res.redirect('/admin/members/create');
+    }
+    /** User Make Object */
+    let Users = {
+        Email: userEmail,
+        Password: userPassword,
+        Name: userName
+    };
+    Service.CreateMember(Users).then(result => {
+        /** Create Success */
+        return res.redirect('/admin/members/list');
+    }).catch(err => {
+        console.log("Registe Error Code ::: ", err.code);
+        console.log("Registe Error ::: ", err);
+        /** Flash Messgae Set */
+        req.flash("MemberMsg", "다시 입력 해주세요.");
+        /** Redirect Registe Page */
+        return res.redirect('/admin/members/create');
+    });
 };
 
 /** Admin Member Detail Page */
