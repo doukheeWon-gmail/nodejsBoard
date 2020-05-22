@@ -47,6 +47,10 @@
             "dialect": "mysql",
             "operatorsAliases": false
         }
+    },
+    "mongoose": {
+        "url": "127.0.0.1",
+        "database": ""
     }
 
 }

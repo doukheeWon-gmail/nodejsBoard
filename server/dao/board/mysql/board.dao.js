@@ -20,6 +20,8 @@ const UpdateBoard = (Boards) => {
             /** Change */
         }, {
             /** Where */
+            /** Default Idx  */
+            /** Boards.Search */
         }).then(result => {
             return resolve(result);
         }).catch(err => {
@@ -61,6 +63,7 @@ const FindBoard = (BoardsIdx) => {
 const DeleteBoard = (Boards) => {
     return new Promise((resolve, reject) => {
         models.web_board.destroy({
+            /** Delete Options */
             where: {
 
             }
@@ -155,9 +158,11 @@ const CreateReply = (Replies) => {
         models.web_reply.create({
 
         }).then(result => {
-
+            return resolve(result);
         }).catch(err => {
-
+            console.log("Board Reply Create Error Code ::: ", err.code);
+            console.log("Board Reply Create Error Code ::: ", err);
+            return reject(err);
         });
     });
 };
@@ -169,21 +174,40 @@ const UpdateReply = (Replies) => {
         }, {
 
         }).then(result => {
-
+            return resolve(result);
         }).catch(err => {
-
+            console.log("Board Reply Update Error Code ::: ", err.code);
+            console.log("Board Repjly Update Error Code ::: ", err);
+            return reject(err);
         });
     });
 };
 
+const CountReply = (Replies) => {
+    return new Promise((resolve, reject) => {
+        models.web_reply.count({
+            where: Replies.options
+        }).then(result => {
+            return resolve(result);
+        }).catch(err => {
+            console.log("Board Reply Count Error Code ::: ", err.code);
+            console.log("Board Reply Count Error ::: ", err);
+            return reject(err);
+        });
+    });
+}
+
 const ListReply = (Replies) => {
     return new Promise((resolve, reject) => {
         models.web_reply.findAll({
-
+            /** Search Options */
+            where: Replies.options
         }).then(result => {
-
+            return resolve(result);
         }).catch(err => {
-
+            console.log("Board Reply List Error Code ::: ", err.code);
+            console.log("Board Reply List Error ::: ", err);
+            return reject(err);
         });
     });
 };
@@ -191,13 +215,14 @@ const ListReply = (Replies) => {
 const DeleteReply = (Replies) => {
     return new Promise((resolve, reject) => {
         models.web_reply.destroy({
-            where: {
-
-            }
+            /** Delete Reply Default id */
+            where: Replies.options
         }).then(result => {
-
+            return resolve(result);
         }).catch(err => {
-
+            console.log("Board Reply Delete Error Code ::: ", err.code);
+            console.log("Board Reply Delete Error ::: ", err);
+            return reject(err);
         });
     });
 };
@@ -212,6 +237,7 @@ module.exports = {
     ListBoard,
     CreateReply,
     UpdateReply,
+    CountReply,
     ListReply,
     DeleteReply
 };
