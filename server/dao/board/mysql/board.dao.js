@@ -39,7 +39,6 @@ const FindBoard = (BoardsIdx) => {
                 where: {
                     id: BoardsIdx
                 },
-
                 attributes: ['id', 'title', 'content', 'writer'],
                 include: [{
                     model: models.web_reply,
@@ -156,7 +155,10 @@ const ListBoard = (Boards) => {
 const CreateReply = (Replies) => {
     return new Promise((resolve, reject) => {
         models.web_reply.create({
-
+            boardIdx: Replies.BoardIdx,
+            reTitle: Replies.title,
+            reContent: Replies.content,
+            replyer: Replies.writer
         }).then(result => {
             return resolve(result);
         }).catch(err => {
@@ -169,11 +171,15 @@ const CreateReply = (Replies) => {
 
 const UpdateReply = (Replies) => {
     return new Promise((resolve, reject) => {
-        models.web_reply.update({
+        models.web_reply.update(
+            /** Update Reply */
+            {
 
-        }, {
+            },
+            /** Where Options Search */
+            {
 
-        }).then(result => {
+            }).then(result => {
             return resolve(result);
         }).catch(err => {
             console.log("Board Reply Update Error Code ::: ", err.code);
@@ -195,7 +201,7 @@ const CountReply = (Replies) => {
             return reject(err);
         });
     });
-}
+};
 
 const ListReply = (Replies) => {
     return new Promise((resolve, reject) => {
@@ -207,6 +213,27 @@ const ListReply = (Replies) => {
         }).catch(err => {
             console.log("Board Reply List Error Code ::: ", err.code);
             console.log("Board Reply List Error ::: ", err);
+            return reject(err);
+        });
+    });
+};
+
+const PagingReply = (Replies) => {
+    return new Promise((resolve, reject) => {
+        models.web_reply.findALl({
+            where: Replies.options,
+            offset: Replies.offset,
+            limit: 10,
+            order: [
+                [
+                    'createdAt', 'DESC'
+                ]
+            ]
+        }).then(result => {
+            return resolve(result);
+        }).catch(err => {
+            console.log("Board Reply Paging Error Code ::: ", err.code);
+            console.log("Board Reply Paging Error ::: ", err);
             return reject(err);
         });
     });
