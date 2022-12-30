@@ -42,7 +42,7 @@
         "session-file-store": "^1.4.0"
     },
     "devDependencies": {
-        "mocha": "^7.1.0",
+        "mocha": "^10.2.0",
         "pkg": "^4.4.4",
         "should": "^13.2.3",
         "supertest": "^4.0.2"
